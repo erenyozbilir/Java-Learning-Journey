@@ -18,6 +18,7 @@ public class SnakeGame extends JPanel implements ActionListener {
 
     private int bodyParts = 3;
     private int applesEaten = 0;
+    private int speed = 150;
 
     private int appleX;
     private int appleY;
@@ -59,7 +60,8 @@ public class SnakeGame extends JPanel implements ActionListener {
             timer.stop();
         }
 
-        timer = new Timer(100, this);
+        speed = 150;
+        timer = new Timer(speed, this);
         timer.start();
 
         repaint();
@@ -159,13 +161,19 @@ public class SnakeGame extends JPanel implements ActionListener {
     // Elma kontrolü
     public void checkApple() {
 
-        if (x[0] == appleX && y[0] == appleY) {
+    if (x[0] == appleX && y[0] == appleY) {
 
-            bodyParts++;
-            applesEaten++;
+        bodyParts++;
+        applesEaten++;
 
-            newApple();
+        // Her elma yendiğinde hareket aralığını azalt
+        if (speed > 60) {
+            speed = Math.max(60, speed - 10);
+            timer.setDelay(speed);
         }
+
+        newApple();
+    }
     }
 
     // Çarpışma kontrolü
